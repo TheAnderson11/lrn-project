@@ -1,4 +1,7 @@
 import siteLogo from '../../../assets/logo.svg';
+import Button from '../../../components/ui/Button';
+import Input from '../../../components/ui/Input';
+import { LinkTo } from '../../../components/ui/LinkTo';
 import {
   FormContainer,
   ImgContainer,
@@ -7,10 +10,7 @@ import {
   RootContainer,
   SpanText,
   Title,
-} from '../../../styles/authStyles';
-import Button from '../../../styles/Button';
-import Input from '../../../styles/Input';
-import { LinkTo } from '../../../styles/LinkTo';
+} from '../authStyled';
 
 const LoginPage = () => {
   return (
@@ -21,10 +21,10 @@ const LoginPage = () => {
           <Title>Authorization</Title>
         </ImgContainer>
         <LabelText htmlFor="email">E-mail</LabelText>
-        <Input type="email" id="email" />
+        <Input type="email" id="email" placeholder="Enter e-mail" />
 
         <LabelText htmlFor="password">Password</LabelText>
-        <Input type="password" id="password" />
+        <Input type="password" id="password" placeholder="Enter password" />
         <Button width="80%" type="submit">
           submit
         </Button>
