@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const RootContainer = styled.div`
+export const RootContainer = styled.form`
   width: 100vw;
   height: 100vh;
   display: flex;

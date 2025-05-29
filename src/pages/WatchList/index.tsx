@@ -1,5 +1,5 @@
 const WatchList = () => {
-  return <div>WatchList</div>;
+  return <div>Watchlist</div>;
 };
 
 export default WatchList;

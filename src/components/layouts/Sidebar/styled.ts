@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router';
 import styled from 'styled-components';
 
 export const SidebarRoot = styled.div`
@@ -24,6 +25,15 @@ export const SiteLogoSection = styled.div`
 export const NavSection = styled.ul`
   width: 100%;
   margin-bottom: 56px;
+`;
+
+export const StyledNavLink = styled(NavLink)`
+  display: block;
+  text-decoration: none;
+  &.active {
+    border-radius: 5px;
+    background-color: #1900d5;
+  }
 `;
 
 export const Divider = styled.div`
