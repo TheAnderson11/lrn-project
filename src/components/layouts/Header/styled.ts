@@ -17,6 +17,12 @@ export const HeaderLog = styled.div`
   margin-left: 32px;
 `;
 
+export const HeaderWelcome = styled.h2`
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+`;
+
 export const HeaderNav = styled.div`
   display: flex;
   justify-content: center;

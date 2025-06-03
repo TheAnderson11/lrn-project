@@ -31,9 +31,8 @@ const RegisterPage = () => {
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await regData({ firstName, userName, email, password });
-      dispatch(setUser(result.data));
-      console.log(result.data);
+      const result = await regData({ firstName, userName, email, password }).unwrap();
+      dispatch(setUser(result));
       navigate('/');
     } catch (error) {
       console.log(error);

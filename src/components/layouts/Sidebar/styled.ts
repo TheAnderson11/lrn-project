@@ -22,6 +22,12 @@ export const SiteLogoSection = styled.div`
   margin: 24px 0 45px 0;
 `;
 
+export const LogoTitle = styled.h2`
+  font-size: 28px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.logoTitle};
+`;
+
 export const NavSection = styled.ul`
   width: 100%;
   margin-bottom: 56px;
@@ -31,6 +37,7 @@ export const StyledNavLink = styled(NavLink)`
   display: block;
   text-decoration: none;
   &.active {
+    color: #ffffff;
     border-radius: 5px;
     background-color: #1900d5;
   }
@@ -50,6 +57,8 @@ export const SidebarItem = styled.li`
   height: 40px;
   margin-bottom: 20px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
 `;
 
 export const UserSection = styled.ul`

@@ -6,6 +6,7 @@ export const lightTheme: DefaultTheme = {
   text: '#7c7c7c',
   inputBackground: '#FFFFFF',
   inputBorder: '#D1D1D1',
+  logoTitle: '#000000',
   divider: '#D1D1D1',
 };
 
@@ -15,5 +16,6 @@ export const darkTheme: DefaultTheme = {
   text: '#7C7C7C',
   inputBackground: '#232323',
   inputBorder: '#232323',
+  logoTitle: '#FFFFFF',
   divider: '#3C3C3C',
 };

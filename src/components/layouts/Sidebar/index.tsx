@@ -2,12 +2,12 @@ import { CiLogout, CiSettings } from 'react-icons/ci';
 import { FaHome, FaRegUser } from 'react-icons/fa';
 import { MdAutoGraph } from 'react-icons/md';
 import { TbBrandAppleNews } from 'react-icons/tb';
-import { useDispatch, useSelector } from 'react-redux';
 import SiteLogo from '../../../assets/logo.svg';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { clearUser } from '../../../store/slices/userSlice';
-import type { RootState } from '../../../store/store';
 import {
   Divider,
+  LogoTitle,
   NavSection,
   SidebarItem,
   SidebarRoot,
@@ -17,8 +17,8 @@ import {
 } from './styled';
 
 const Sidebar = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.userSlice.user?.userName);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.userSlice.user?.userName);
   const handleExit = () => {
     dispatch(clearUser());
   };
@@ -27,7 +27,7 @@ const Sidebar = () => {
     <SidebarRoot>
       <SiteLogoSection>
         <img src={SiteLogo} alt="logosite" style={{ paddingRight: '12px' }} />
-        <h2>Groth</h2>
+        <LogoTitle>Groth</LogoTitle>
       </SiteLogoSection>
 
       <NavSection>
@@ -60,10 +60,12 @@ const Sidebar = () => {
       <Divider />
 
       <UserSection>
-        <SidebarItem>
-          <FaRegUser style={{ width: '24px', height: '24px', marginRight: '8px' }} />
-          {user}
-        </SidebarItem>
+        <StyledNavLink to="/user-panel">
+          <SidebarItem>
+            <FaRegUser style={{ width: '24px', height: '24px', marginRight: '8px' }} />
+            {user}
+          </SidebarItem>
+        </StyledNavLink>
         <SidebarItem onClick={handleExit}>
           <CiLogout style={{ width: '24px', height: '24px', marginRight: '8px' }} />
           Logout

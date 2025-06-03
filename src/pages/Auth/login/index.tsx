@@ -28,8 +28,8 @@ const LoginPage = () => {
   const handleForm = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await sendData({ email, password });
-      dispatch(setUser(result.data));
+      const result = await sendData({ email, password }).unwrap();
+      dispatch(setUser(result));
       navigate('/');
     } catch (error) {
       console.log(error);
