@@ -7,6 +7,7 @@ declare module 'styled-components' {
     text: string;
     inputBackground: string;
     inputBorder: string;
+    logoTitle: string;
     divider: string;
   }
 }

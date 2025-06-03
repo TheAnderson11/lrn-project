@@ -5,6 +5,7 @@ import RegisterPage from '../pages/Auth/register';
 import News from '../pages/News';
 import Selected from '../pages/Selected';
 import Settings from '../pages/Settings';
+import UserPanel from '../pages/UserPanel';
 import WatchList from '../pages/WatchList';
 import PrivateRouter from './PrivateRouter';
 
@@ -19,6 +20,7 @@ export const routes = createBrowserRouter([
           { path: '/selected', element: <Selected /> },
           { path: '/news', element: <News /> },
           { path: '/settings', element: <Settings /> },
+          { path: '/user-panel', element: <UserPanel /> },
         ],
       },
     ],

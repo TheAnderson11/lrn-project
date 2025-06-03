@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../../../store/slices/themeSlice';
 import type { RootState } from '../../../store/store';
 import Input from '../../ui/Input';
-import { Divider, HeaderLog, HeaderNav, HeaderRoot, SearchDiv } from './styled';
+import { Divider, HeaderLog, HeaderNav, HeaderRoot, HeaderWelcome, SearchDiv } from './styled';
 
 const Header = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -44,7 +44,9 @@ const Header = () => {
   return (
     <HeaderRoot>
       <HeaderLog>
-        <h2 style={{ fontWeight: '700', fontSize: '20px' }}>Welcome {user}</h2>
+        <HeaderWelcome style={{ fontWeight: '700', fontSize: '20px' }}>
+          Welcome {user}
+        </HeaderWelcome>
         <p style={{ fontWeight: '500', fontSize: '14px' }}>
           {formattedDate} | {time}
         </p>
