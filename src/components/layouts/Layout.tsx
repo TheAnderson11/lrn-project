@@ -14,10 +14,7 @@ const Layout = ({ children }: layoutProps) => {
       <Sidebar />
       <WrapperContent>
         <Header />
-        <ContentDiv>
-          <h1>Main-content</h1>
-          {children}
-        </ContentDiv>
+        <ContentDiv>{children}</ContentDiv>
       </WrapperContent>
     </LayoutRoot>
   );

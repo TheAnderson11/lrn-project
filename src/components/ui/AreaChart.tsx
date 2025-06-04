@@ -8,11 +8,12 @@ import {
   PointElement,
   Title,
   Tooltip,
-  type ScriptableContext,
 } from 'chart.js';
 import { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import { useGetCoinHistoryQuery } from '../../store/api/coingecko';
+import { useGetCoinHistoryQuery } from '../../store/api/coinGeckoApi';
+import { useAppDispatch } from '../../store/hooks';
+import { setCoinGecko } from '../../store/slices/coinGeckoSlice';
 
 ChartJS.register(
   CategoryScale,
@@ -24,28 +25,25 @@ ChartJS.register(
   Legend,
   Title,
 );
-interface CoinChartProps {
-  onPriceUpdate: (price: string) => void;
-  width: number;
-  height: number;
-}
 
-export const AreaChart = ({ onPriceUpdate, width, height }: CoinChartProps) => {
-  const { data, isLoading, isError } = useGetCoinHistoryQuery({
+export const AreaChart = () => {
+  const dispatch = useAppDispatch();
+  const { data, isLoading, isError, isSuccess } = useGetCoinHistoryQuery({
     coinId: 'bitcoin',
     currency: 'usd',
-    days: '7',
+    days: '90',
   });
   useEffect(() => {
-    if (data && data.prices.length > 0) {
-      const lastPrice = data.prices[data.prices.length - 1][1];
-      const formattedPrice = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 5,
-      }).format(lastPrice);
-      onPriceUpdate(formattedPrice);
+    if (isSuccess && data) {
+      dispatch(
+        setCoinGecko({
+          prices: data.prices,
+          market_caps: data.market_caps,
+          total_volumes: data.total_volumes,
+        }),
+      );
     }
-  }, [data, onPriceUpdate]);
+  }, [data, isSuccess, useAppDispatch]);
 
   if (isLoading) return <div>Загрузка...</div>;
   if (isError || !data) return <div>Ошибка</div>;
@@ -61,21 +59,11 @@ export const AreaChart = ({ onPriceUpdate, width, height }: CoinChartProps) => {
     labels,
     datasets: [
       {
+        fill: true,
         label: 'BTC/USD',
         data: priceData,
-        backgroundColor: (context: ScriptableContext<'line'>) => {
-          const { chart } = context;
-          const { ctx, chartArea } = chart;
-
-          // chartArea ещё может быть undefined на первом рендере
-          if (!chartArea) return 'rgba(75,192,192,0.2)';
-
-          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          gradient.addColorStop(0, '#C1EF00'); // верх
-          gradient.addColorStop(1, '#232323'); // низ
-          return gradient;
-        },
-        fill: true,
+        borderColor: '#232323',
+        backgroundColor: '#C1EF00',
       },
     ],
   };
@@ -86,7 +74,7 @@ export const AreaChart = ({ onPriceUpdate, width, height }: CoinChartProps) => {
   const padding = (maxPrice - minPrice) * 0.1;
 
   const options = {
-    responsive: false,
+    responsive: true,
     maintainAspectRatio: false,
     scales: {
       x: {
@@ -112,15 +100,8 @@ export const AreaChart = ({ onPriceUpdate, width, height }: CoinChartProps) => {
   };
 
   return (
-    <Line
-      data={chartData}
-      options={{
-        ...options,
-        responsive: false,
-        maintainAspectRatio: false,
-      }}
-      width={width}
-      height={height}
-    />
+    <div style={{ width: '145px', height: '111px' }}>
+      <Line data={chartData} options={options} />
+    </div>
   );
 };

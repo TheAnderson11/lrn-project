@@ -20,6 +20,5 @@ export const ContentDiv = styled.div`
   flex-grow: 1;
   background-color: ${({ theme }) => theme.backgroundMain};
   color: ${({ theme }) => theme.text};
-  padding: 10px;
   overflow: auto;
 `;

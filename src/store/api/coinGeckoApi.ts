@@ -1,12 +1,9 @@
 // coinApi.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { ICoinGecko } from '../../interfaces/ICoinGecko';
 
-interface MarketChartResponse {
-  prices: [number, number][];
-}
-
-export const apiCoin = createApi({
-  reducerPath: 'apiCoin',
+export const coinGeckoApi = createApi({
+  reducerPath: 'coinGeckoApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.coingecko.com/api/v3/',
     prepareHeaders: headers => {
@@ -16,14 +13,11 @@ export const apiCoin = createApi({
     },
   }),
   endpoints: builder => ({
-    getCoinHistory: builder.query<
-      MarketChartResponse,
-      { coinId: string; currency: string; days: string }
-    >({
+    getCoinHistory: builder.query<ICoinGecko, { coinId: string; currency: string; days: string }>({
       query: ({ coinId, currency, days }) =>
         `coins/${coinId}/market_chart?vs_currency=${currency}&days=${days}`,
     }),
   }),
 });
 
-export const { useGetCoinHistoryQuery } = apiCoin;
+export const { useGetCoinHistoryQuery } = coinGeckoApi;
