@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../store';
 
 export const auth = createApi({
-  reducerPath: 'api',
+  reducerPath: 'loginApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5000/',
     prepareHeaders: (headers, { getState }) => {
