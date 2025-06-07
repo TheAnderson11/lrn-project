@@ -13,7 +13,9 @@ import { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useGetCoinHistoryQuery } from '../../store/api/coinGeckoApi';
 import { useAppDispatch } from '../../store/hooks';
+
 import { setCoinGecko } from '../../store/slices/coinGeckoSlice';
+import Loader from './Loading';
 
 ChartJS.register(
   CategoryScale,
@@ -45,15 +47,31 @@ export const AreaChart = () => {
     }
   }, [data, isSuccess, useAppDispatch]);
 
-  if (isLoading) return <div>Загрузка...</div>;
+  if (isLoading) return <Loader textValue="Loading..." textColor="red" />;
   if (isError || !data) return <div>Ошибка</div>;
 
-  const labels = data.prices.map((p: [number, number]) => {
-    const date = new Date(p[0]);
-    return `${date.getDate()}/${date.getMonth() + 1}`;
+  const prices = data.prices;
+
+  const oneDayInMs = 24 * 60 * 60 * 1000;
+  const filteredPrices: [number, number][] = [];
+
+  let lastTimestamp = 0;
+
+  for (const [timestamp, price] of prices) {
+    if (timestamp - lastTimestamp >= oneDayInMs) {
+      filteredPrices.push([timestamp, price]);
+      lastTimestamp = timestamp;
+    }
+  }
+
+  const labels = filteredPrices.map(([timestamp]) => {
+    const date = new Date(timestamp);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${day}.${month}`;
   });
 
-  const priceData = data.prices.map((p: [number, number]) => p[1]);
+  const priceData = filteredPrices.map(([, price]) => price);
 
   const chartData = {
     labels,

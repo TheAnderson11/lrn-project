@@ -16,4 +16,5 @@ interface IUser {
 export interface IUserState {
   user: IUser | null;
   token: string | null;
+  activeMenuBar: boolean;
 }

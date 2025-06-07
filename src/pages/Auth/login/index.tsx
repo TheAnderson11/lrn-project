@@ -6,6 +6,7 @@ import siteLogo from '../../../assets/logo.svg';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import { LinkTo } from '../../../components/ui/LinkTo';
+import Loader from '../../../components/ui/Loading';
 import { useSendDataMutation } from '../../../store/api/loginApi';
 import { setUser } from '../../../store/slices/userSlice';
 import {
@@ -35,7 +36,7 @@ const LoginPage = () => {
       console.log(error);
     }
   };
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader textValue="Loading..." textColor="red" />;
 
   return (
     <RootContainer onSubmit={handleForm}>

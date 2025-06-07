@@ -1,12 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
-import { CiSearch } from 'react-icons/ci';
+import { CiMenuBurger, CiSearch } from 'react-icons/ci';
 import { FaThemeco } from 'react-icons/fa';
 import { MdNotificationsNone } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
+import SiteLogo from '../../../assets/logo.svg';
+import { useAppSelector } from '../../../store/hooks';
 import { toggleTheme } from '../../../store/slices/themeSlice';
+import { toggleMenuBar } from '../../../store/slices/userSlice';
 import type { RootState } from '../../../store/store';
 import Input from '../../ui/Input';
-import { Divider, HeaderLog, HeaderNav, HeaderRoot, HeaderWelcome, SearchDiv } from './styled';
+import { LogoTitle } from '../Sidebar/styled';
+import {
+  Divider,
+  HeaderLogBlock,
+  HeaderNav,
+  HeaderRoot,
+  HeaderWelcome,
+  SearchDiv,
+  SiteLogoBlock,
+} from './styled';
 
 const Header = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -15,6 +27,8 @@ const Header = () => {
     inputRef.current?.focus();
   };
   const dispatch = useDispatch();
+  const { activeMenuBar } = useAppSelector(state => state.userSlice);
+
   const user = useSelector((state: RootState) => state.userSlice.user?.userName);
   const handleThemeToggle = () => {
     dispatch(toggleTheme());
@@ -43,14 +57,24 @@ const Header = () => {
 
   return (
     <HeaderRoot>
-      <HeaderLog>
+      <HeaderLogBlock>
+        <SiteLogoBlock $activeMenuBar={activeMenuBar}>
+          <CiMenuBurger
+            onClick={() => dispatch(toggleMenuBar())}
+            color="white"
+            style={{ width: '25px', height: '25px', marginRight: '22px' }}
+          />
+          <img src={SiteLogo} alt="logosite" style={{ paddingRight: '12px' }} />
+          <LogoTitle>Groth</LogoTitle>
+        </SiteLogoBlock>
+
         <HeaderWelcome style={{ fontWeight: '700', fontSize: '20px' }}>
           Welcome {user}
         </HeaderWelcome>
         <p style={{ fontWeight: '500', fontSize: '14px' }}>
           {formattedDate} | {time}
         </p>
-      </HeaderLog>
+      </HeaderLogBlock>
 
       <HeaderNav>
         <FaThemeco
