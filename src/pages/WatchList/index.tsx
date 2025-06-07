@@ -1,53 +1,90 @@
+import price_down from '../../assets/trend-down.svg';
+import price_up from '../../assets/trend-up.svg';
 import { AreaChart } from '../../components/ui/AreaChart';
 import { useAppSelector } from '../../store/hooks';
-import { formatCurrency } from '../../utils/formatCurrency';
 import {
   AverageBlock,
   ChartBlock,
+  ChartBlockChange,
+  ChartBlockTitle,
   CustomerReturnBlock,
   MainContainer,
+  NumberChange,
   OrderBlock,
+  PriceChangeBlock,
   RecentInvoiceBlock,
   RightPanel,
   SalesBlock,
   TitleBold,
-  TitleSemiBold,
+  TitleSmall,
   TopProductBlock,
   WrapperDiv,
 } from './styled';
 
 const WatchList = () => {
   const { prices } = useAppSelector(state => state.coinGeckoSlice);
+
+  const firstPrice = prices.length ? prices[0][1] : null; // цена открытия
   const lastPrice = prices.length ? prices[prices.length - 1][1] : null;
-  const formattedPrice = lastPrice ? formatCurrency(lastPrice, 'USD') : 'Loading...';
+
+  let priceChangePercent = null;
+
+  if (prices.length >= 2) {
+    const first = prices[0][1];
+    const last = prices[prices.length - 1][1];
+    priceChangePercent = (((last - first) / first) * 100).toFixed(2);
+  }
+  const bckground = Number(priceChangePercent) > 0;
   return (
     <WrapperDiv>
       <MainContainer>
         <AverageBlock>
-          <TitleSemiBold>Average Revenue</TitleSemiBold>
+          <TitleBold $textSize="20px" $textWeight={600}>
+            Average Revenue
+          </TitleBold>
           <ChartBlock>
-            <TitleBold>{formattedPrice}</TitleBold>
+            <ChartBlockTitle>
+              <TitleBold $textSize="32px" $textWeight={700}>
+                ${firstPrice?.toFixed(2)}
+              </TitleBold>
+              <ChartBlockChange>
+                {Number(priceChangePercent) > 0 ? (
+                  <PriceChangeBlock $bckground={bckground}>
+                    <img src={price_up} alt="price_up" style={{ paddingRight: '3px' }} />
+                    <NumberChange>{priceChangePercent}%</NumberChange>
+                  </PriceChangeBlock>
+                ) : (
+                  <PriceChangeBlock $bckground={bckground}>
+                    <img src={price_down} alt="price_down" />
+                    {priceChangePercent}
+                  </PriceChangeBlock>
+                )}
+
+                <TitleSmall $textSize="14px" $textWeight={400}>
+                  ${lastPrice?.toFixed(2)}
+                </TitleSmall>
+              </ChartBlockChange>
+            </ChartBlockTitle>
             <AreaChart />
           </ChartBlock>
         </AverageBlock>
 
         <CustomerReturnBlock>
-          <TitleSemiBold>Customer Return</TitleSemiBold>
+          <TitleSmall>Customer Return</TitleSmall>
           <ChartBlock>
-            <TitleBold>{formattedPrice}</TitleBold>
             <AreaChart />
           </ChartBlock>
         </CustomerReturnBlock>
 
         <OrderBlock>
-          <TitleSemiBold>Revenue vs Order</TitleSemiBold>
-          <h3>{formattedPrice}</h3>
+          <TitleSmall>Revenue vs Order</TitleSmall>
+
           <AreaChart />
         </OrderBlock>
 
         <RecentInvoiceBlock>
           <TitleBold>Recent Invoice</TitleBold>
-          <h3>{formattedPrice}</h3>
+
           <AreaChart />
         </RecentInvoiceBlock>
       </MainContainer>
@@ -55,13 +92,13 @@ const WatchList = () => {
       <RightPanel>
         <SalesBlock>
           <TitleBold>Sales by Category</TitleBold>
-          <h3>{formattedPrice}</h3>
+
           <AreaChart />
         </SalesBlock>
 
         <TopProductBlock>
           <TitleBold>Top Products</TitleBold>
-          <h3>{formattedPrice}</h3>
+
           <AreaChart />
         </TopProductBlock>
       </RightPanel>

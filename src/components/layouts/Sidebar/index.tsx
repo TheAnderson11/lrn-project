@@ -1,10 +1,11 @@
-import { CiLogout, CiSettings } from 'react-icons/ci';
+import { CiLogout, CiMenuBurger, CiSettings } from 'react-icons/ci';
 import { FaHome, FaRegUser } from 'react-icons/fa';
 import { MdAutoGraph } from 'react-icons/md';
 import { TbBrandAppleNews } from 'react-icons/tb';
 import SiteLogo from '../../../assets/logo.svg';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { clearUser } from '../../../store/slices/userSlice';
+import { clearUser, toggleMenuBar } from '../../../store/slices/userSlice';
+
 import {
   Divider,
   LogoTitle,
@@ -18,14 +19,20 @@ import {
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(state => state.userSlice.user?.userName);
+  const { activeMenuBar } = useAppSelector(state => state.userSlice);
+  const { user } = useAppSelector(state => state.userSlice);
   const handleExit = () => {
     dispatch(clearUser());
   };
 
   return (
-    <SidebarRoot>
+    <SidebarRoot $activeMenuBar={activeMenuBar}>
       <SiteLogoSection>
+        <CiMenuBurger
+          onClick={() => dispatch(toggleMenuBar())}
+          color="white"
+          style={{ width: '25px', height: '25px', marginRight: '22px' }}
+        />
         <img src={SiteLogo} alt="logosite" style={{ paddingRight: '12px' }} />
         <LogoTitle>Groth</LogoTitle>
       </SiteLogoSection>
@@ -63,7 +70,7 @@ const Sidebar = () => {
         <StyledNavLink to="/user-panel">
           <SidebarItem>
             <FaRegUser style={{ width: '24px', height: '24px', marginRight: '8px' }} />
-            {user}
+            {user?.userName}
           </SidebarItem>
         </StyledNavLink>
         <SidebarItem onClick={handleExit}>

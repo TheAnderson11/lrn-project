@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router';
 import styled from 'styled-components';
 
-export const SidebarRoot = styled.div`
+export const SidebarRoot = styled.div<{ $activeMenuBar: boolean }>`
   background-color: ${({ theme }) => theme.backgroundLayout};
   color: ${({ theme }) => theme.text};
   width: 247px;
   height: 100vh;
   flex-shrink: 0;
-  display: flex;
+  display: ${({ $activeMenuBar }) => ($activeMenuBar ? 'flex' : 'none')};
   align-items: center;
   flex-direction: column;
   padding: 0 16px;

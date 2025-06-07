@@ -7,6 +7,7 @@ const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 const initialState: IUserState = {
   user: parsedUser?.user || null,
   token: parsedUser?.token || null,
+  activeMenuBar: false,
 };
 
 const userSlice = createSlice({
@@ -23,8 +24,11 @@ const userSlice = createSlice({
       state.token = null;
       localStorage.removeItem('user');
     },
+    toggleMenuBar: state => {
+      state.activeMenuBar = !state.activeMenuBar;
+    },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, toggleMenuBar } = userSlice.actions;
 export default userSlice.reducer;

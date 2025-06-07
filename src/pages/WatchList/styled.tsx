@@ -75,15 +75,15 @@ export const TopProductBlock = styled.div`
   border: 1px solid ${({ theme }) => theme.inputBorder};
 `;
 
-export const TitleBold = styled.h1`
-  font-size: 16px;
-  font-weight: 700;
+export const TitleBold = styled.h1<{ $textSize?: string; $fontWeight?: number }>`
+  font-size: ${({ $textSize }) => $textSize};
+  font-weight: ${({ $fontWeight }) => $fontWeight};
   color: ${({ theme }) => theme.logoTitle};
 `;
 
-export const TitleSemiBold = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
+export const TitleSmall = styled.p<{ $textSize?: string; $fontWeight?: number }>`
+  font-size: ${({ $textSize }) => $textSize};
+  font-weight: ${({ $fontWeight }) => $fontWeight};
   color: ${({ theme }) => theme.logoTitle};
 `;
 
@@ -91,4 +91,35 @@ export const ChartBlock = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 390px;
+  height: 100px;
+`;
+
+export const ChartBlockTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ChartBlockChange = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-top: 8px;
+`;
+
+export const PriceChangeBlock = styled.div<{ $bckground: boolean }>`
+  display: flex;
+  align-items: center;
+  width: 66px;
+  height: 26px;
+  padding: 4px 8px;
+  background-color: ${({ $bckground }) => ($bckground ? '#A9FFA7' : '#FFA7A7')};
+  color: black;
+  border-radius: 4px;
+`;
+
+export const NumberChange = styled.p`
+  font-size: 12px;
+  font-weight: 400;
+  color: black;
 `;

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const HeaderRoot = styled.div`
+  width: 100%;
   height: 88px;
   background-color: ${({ theme }) => theme.backgroundLayout};
   color: ${({ theme }) => theme.text};
@@ -11,16 +12,24 @@ export const HeaderRoot = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.divider};
 `;
 
-export const HeaderLog = styled.div`
+export const HeaderLogBlock = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
   margin-left: 32px;
+`;
+
+export const SiteLogoBlock = styled.div<{ $activeMenuBar: boolean }>`
+  display: ${({ $activeMenuBar }) => ($activeMenuBar ? 'none' : 'flex')};
+  align-items: center;
+  margin-right: 25px;
 `;
 
 export const HeaderWelcome = styled.h2`
   font-size: 20px;
   font-weight: 700;
   color: #ffffff;
+  margin-right: 25px;
 `;
 
 export const HeaderNav = styled.div`
