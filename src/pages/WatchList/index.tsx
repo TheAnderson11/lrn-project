@@ -1,6 +1,7 @@
 import price_down from '../../assets/trend-down.svg';
 import price_up from '../../assets/trend-up.svg';
 import { AreaChart } from '../../components/ui/AreaChart';
+import LineChart from '../../components/ui/LineChart';
 import { useAppSelector } from '../../store/hooks';
 import {
   AverageBlock,
@@ -78,13 +79,11 @@ const WatchList = () => {
 
         <OrderBlock>
           <TitleSmall>Revenue vs Order</TitleSmall>
-
-          <AreaChart />
+          <LineChart />
         </OrderBlock>
 
         <RecentInvoiceBlock>
           <TitleBold>Recent Invoice</TitleBold>
-
           <AreaChart />
         </RecentInvoiceBlock>
       </MainContainer>
