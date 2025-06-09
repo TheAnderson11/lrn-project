@@ -1,19 +1,21 @@
 import {
   CategoryScale,
   Chart as ChartJS,
-  Filler,
   Legend,
   LinearScale,
   LineElement,
   PointElement,
+  TimeScale,
   Title,
   Tooltip,
+  type ChartOptions,
+  type TooltipItem,
 } from 'chart.js';
+import 'chartjs-adapter-date-fns';
 import { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useGetCoinHistoryQuery } from '../../store/api/coinGeckoApi';
 import { useAppDispatch } from '../../store/hooks';
-
 import { setCoinGecko } from '../../store/slices/coinGeckoSlice';
 import Loader from './Loading';
 
@@ -22,19 +24,19 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  Tooltip,
-  Filler,
-  Legend,
   Title,
+  Tooltip,
+  TimeScale,
+  Legend,
 );
-
-export const AreaChart = () => {
+const LineChart = () => {
   const dispatch = useAppDispatch();
   const { data, isLoading, isError, isSuccess } = useGetCoinHistoryQuery({
     coinId: 'bitcoin',
     currency: 'usd',
     days: '90',
   });
+
   useEffect(() => {
     if (isSuccess && data) {
       dispatch(
@@ -46,29 +48,22 @@ export const AreaChart = () => {
       );
     }
   }, [data, isSuccess, dispatch]);
-
   if (isLoading) return <Loader textValue="Loading..." textColor="red" />;
   if (isError || !data) return <div>Ошибка</div>;
 
-  const prices = data.prices;
   const oneDayInMs = 24 * 60 * 60 * 1000;
   const filteredPrices: [number, number][] = [];
 
   let lastTimestamp = 0;
 
-  for (const [timestamp, price] of prices) {
+  for (const [timestamp, price] of data.prices) {
     if (timestamp - lastTimestamp >= oneDayInMs) {
       filteredPrices.push([timestamp, price]);
       lastTimestamp = timestamp;
     }
   }
 
-  const labels = filteredPrices.map(([timestamp]) => {
-    const date = new Date(timestamp);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    return `${day}.${month}`;
-  });
+  const labels = filteredPrices.map(([timestamp]) => new Date(timestamp));
 
   const priceData = filteredPrices.map(([, price]) => price);
 
@@ -76,49 +71,62 @@ export const AreaChart = () => {
     labels,
     datasets: [
       {
-        fill: true,
-        label: 'BTC/USD',
+        label: 'Price (USD)',
         data: priceData,
-        borderColor: '#232323',
-        backgroundColor: '#C1EF00',
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        tension: 0.3,
       },
     ],
   };
 
-  const minPrice = Math.min(...priceData);
-  const maxPrice = Math.max(...priceData);
-
-  const padding = (maxPrice - minPrice) * 0.1;
-
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        display: true,
-        grid: {
-          display: false,
-        },
+    plugins: {
+      legend: {
+        position: 'top',
       },
-      y: {
-        display: false,
-        min: minPrice - padding,
-        max: maxPrice + padding,
-        grid: {
-          display: false,
+      title: {
+        display: true,
+        text: 'Bitcoin Price (USD)',
+      },
+      tooltip: {
+        callbacks: {
+          title: (tooltipItems: TooltipItem<'line'>[]) => {
+            const date = new Date(tooltipItems[0].parsed.x as number);
+            return new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            }).format(date);
+          },
         },
       },
     },
-    plugins: {
-      legend: {
-        display: false,
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'month',
+          displayFormats: {
+            month: 'MMMM',
+          },
+        },
+        title: {
+          display: true,
+          text: 'Month',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Price in USD',
+        },
       },
     },
   };
 
-  return (
-    <div style={{ width: '145px', height: '111px' }}>
-      <Line data={chartData} options={options} />
-    </div>
-  );
+  return <Line options={options} data={chartData} />;
 };
+
+export default LineChart;
